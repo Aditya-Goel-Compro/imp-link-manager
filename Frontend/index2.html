@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Tailwind via CDN</title>
+</head>
+
+<body class="bg-gray-100 text-center p-10">
+    <h1 class="text-3xl font-bold text-blue-600">Hello input handling in backend</h1>
+
+    <!-- FIXED: single class attribute -->
+    <input 
+        type="text"
+        class="nameInput text-3xl border border-xl rounded-xl p-12 m-12 w-[80vw] border-black"
+        placeholder="Enter your name and it will save in backend"
+    >
+
+    <button id="btn" class="btn bg-gray-200 rounded-2xl p-2">Save name</button>
+
+    <script>
+        let url = "http://localhost:1111/sampleInput";
+
+        let fnc = async () => {
+            // FIXED: get the first element and its value
+            let nameValue = document.querySelector(".nameInput").value;
+            console.log(nameValue);
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ nameValue })
+                });
+
+                const data = await response.json();
+                console.log("Server response:", data);
+
+            } catch (err) {
+                console.log("error :- ", err);
+            }
+        };
+
+        document.getElementById("btn").addEventListener("click", fnc);
+    </script>
+</body>
+
+</html>

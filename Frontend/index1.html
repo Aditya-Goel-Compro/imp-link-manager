@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #h2 {
+            background-color: yellow;
+            height: 10rem;
+            min-width: 10rem;
+            visibility: hidden;
+            display: inline;
+        }
+    </style>
+</head>
+
+
+<body>
+    <h1>Hello from the frontend index.html</h1>
+
+    <button id="btn">click me to get message from backend -> </button>
+    <h2 id="h2"></h2>
+
+    <script>
+        const h2 = document.getElementById("h2");
+        const btn = document.getElementById("btn");
+
+        const API_URL = "http://localhost:1111";
+
+        async function fetchUsers() {
+            try {
+                const response = await fetch(API_URL);
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data: " + response.status);
+                }
+
+                const x = await response.json();
+                console.log(x);
+                h2.style.visibility = "visible"
+                h2.innerText = x.message;
+
+            } catch (error) {
+                console.log("Error:", error);
+            }
+        }
+
+        // Attach click event
+        btn.addEventListener("click", fetchUsers);
+    </script>
+</body>
+
+</html>

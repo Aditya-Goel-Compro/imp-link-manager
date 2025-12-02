@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Utility class */
+.animate-blink {
+  animation: blink 1s infinite ease-in-out;
+}
+
+/* Border blinking animation */
+@keyframes border-blink {
+  0% ,100%{
+    border-color: transparent;
+  }
+  50% {
+    border-color: currentColor;
+  }
+  
+}
+
+.animate-border-blink {
+  animation: border-blink 1s infinite ease-in-out;
+}
+
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.25s ease-out;
+}
+
