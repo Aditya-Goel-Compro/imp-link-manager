@@ -7,7 +7,13 @@ export default function DeleteConfirmModal({
   onClose,
   onConfirm,
   itemName = "this item",
+  itemType = "link", // 👈 "link" | "reminder"
 }) {
+  const isReminder = itemType === "reminder";
+
+  const title = isReminder ? "Delete Reminder?" : "Delete Link?";
+  const noun = isReminder ? "reminder" : "item";
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -25,12 +31,13 @@ export default function DeleteConfirmModal({
             transition={{ type: "spring", stiffness: 220, damping: 18 }}
           >
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              Delete Link?
+              {title}
             </h2>
+
             <p className="text-md text-gray-600 mb-6">
-              Are you sure you want to delete
-              <span className="font-medium"> "{itemName}"</span>?  
-              You can undo this for the next 30 seconds.
+              Are you sure you want to delete this {noun}
+              <span className="font-medium"> "{itemName}"</span>?{" "}
+              You can undo this for the next 3 seconds.
             </p>
 
             <div className="flex justify-end gap-3">

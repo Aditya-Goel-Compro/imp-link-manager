@@ -4,6 +4,7 @@ import AddImpLinkModal from "../components/AddImpLinkModal";
 import ImpLinksList from "../components/ImpLinksList";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import { useImpLinks } from "../hooks/useImpLinks";
+import { backendUrl } from "../constant";
 
 export default function ImpLinksPage({ linkType }) {   // ⭐ get "office" | "personal" from parent
   // Map category → icon image
@@ -215,16 +216,16 @@ export default function ImpLinksPage({ linkType }) {   // ⭐ get "office" | "pe
 
 
   function Toast({ toast }) {
-  if (!toast) return null;
+    if (!toast) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center">
-      {/* Full-page blurred backdrop */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-xs"></div>
+    return (
+      <div className="fixed inset-0 z-50 flex items-start justify-center">
+        {/* Full-page blurred backdrop */}
+        <div className="absolute inset-0 bg-black/10 backdrop-blur-xs"></div>
 
-      {/* Toast message */}
-      <div
-        className={`
+        {/* Toast message */}
+        <div
+          className={`
           relative top-[20vh]
           px-6 py-3 rounded-2xl shadow-2xl text-sm font-medium
           animate-slide-in flex items-center gap-2
@@ -232,17 +233,43 @@ export default function ImpLinksPage({ linkType }) {   // ⭐ get "office" | "pe
           ${toast.type === "success" ? "text-white bg-emerald-500" : ""}
           ${toast.type === "error" ? "text-white bg-red-500" : ""}
         `}
-      >
-        {/* Icon */}
-        {toast.type === "success" && <span className="text-lg">✔️</span>}
-        {toast.type === "error" && <span className="text-lg">⚠️</span>}
+        >
+          {/* Icon */}
+          {toast.type === "success" && <span className="text-lg">✔️</span>}
+          {toast.type === "error" && <span className="text-lg">⚠️</span>}
 
-        {/* Message */}
-        {toast.message}
+          {/* Message */}
+          {toast.message}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+
+  const handleDownloadExcel = async () => {
+    try {
+      const res = await fetch(`${backendUrl}/imp-links/export`);
+      if (!res.ok) {
+        throw new Error("Failed to download Excel");
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "imp-links.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("💥 Excel download error:", err);
+      // optional: show toast
+      // showToast?.({ type: "error", message: "Failed to download Excel" });
+    }
+  };
+
 
 
 
@@ -265,14 +292,27 @@ export default function ImpLinksPage({ linkType }) {   // ⭐ get "office" | "pe
             </p>
           </div>
 
-          <button
-            onClick={handleAddClick}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-md font-medium text-white bg-indigo-600 hover:bg-indigo-700 shadow-md active:scale-95 transition-transform"
-          >
-            <span className="text-xl leading-none">＋</span>
-            Add Link
-          </button>
+          <div className="flex justify-center items-center">
+
+            <button
+              onClick={handleAddClick}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 shadow-md active:scale-95 transition-transform mr-2"
+            >
+              <span className="text-xl leading-none">＋</span>
+              Add Link
+            </button>
+
+            <button
+              onClick={handleDownloadExcel}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 shadow-md active:scale-95 transition-transform"
+            >
+              <i className="fa-regular fa-file-excel"></i>
+              Export Excel
+            </button>
+          </div>
+
         </div>
+
 
         {/* Search + Category + Tag filters */}
         <div className="mb-6 space-y-3">

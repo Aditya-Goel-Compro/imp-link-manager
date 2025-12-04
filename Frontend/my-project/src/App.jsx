@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import ImpLinksPage from "./pages/ImpLinksPage";
+import ReminderCenter from "./components/ReminderCenter";
 
 // 🔐 Hard-coded passwords (change these as you like)
 const PASSWORDS = {
@@ -233,6 +234,10 @@ function WorkspaceLayout({ children, workspace }) {
         </div>
       </header>
 
+
+<div className="max-w-5xl mx-auto px-4">
+        <ReminderCenter workspace={workspace} />
+      </div>
       {/* Page content */}
       <main>{children}</main>
     </div>
