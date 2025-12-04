@@ -1,3 +1,3 @@
-const backendUrl = "http://localhost:1111"
+const backendUrl = "https://imp-link-manager.onrender.com"
 
 export {backendUrl}
