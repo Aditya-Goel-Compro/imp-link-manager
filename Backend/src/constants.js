@@ -1,1 +1,1 @@
-export const DB_NAME = "sampleBackendForLearning"
+export const DB_NAME = "my-imp-links-tools-database";
