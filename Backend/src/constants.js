@@ -1,1 +1,1 @@
-export const DB_NAME = "my-imp-links-tools-database";
+export const DB_NAME = "my-imp-links-tools-database"
